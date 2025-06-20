@@ -1,0 +1,341 @@
+/* =====================================================
+   GGO Med - Refined Stylesheet
+   ===================================================== */
+
+/* =================  TOKENS & RESET  ================= */
+:root {
+  --accent-blue: #667EEA;
+  --accent-purple: #764BA2;
+  --accent-green: #11998E;
+  --accent-teal: #38EF7D;
+
+  --text-primary: #1A202C;
+  --text-secondary: #4A5568; /* Slightly lighter for better contrast balance */
+  --text-on-accent: #fff;
+
+  --neutral-bg: rgba(255, 255, 255, .95);
+  --card-bg: #fff;
+  --panel-bg: rgba(255, 255, 255, .97); /* For mega menu and similar large panels */
+
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-strong: rgba(0, 0, 0, 0.1);
+
+  --header-height: 80px;
+  --panel-transition-duration: 0.5s;
+  --card-deal-in-duration: 0.5s;
+  --card-deal-out-duration: 0.4s;
+  --card-hover-duration: 0.25s;
+
+  --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Inter', sans-serif; /* Could be different */
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-inner-subtle: inset 0 1px 2px 0 rgba(0,0,0,0.03);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 100%; /* Approx 16px */ }
+body {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: #f8f9fa; /* Light, neutral page background */
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+}
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; border: none; background-color: transparent; }
+a { color: var(--accent-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul, ol { list-style: none; }
+h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); line-height: 1.3; font-weight: 700; }
+
+/* =================  BACKGROUND ANIMATION ================= */
+@keyframes gradientShift {
+  0%, 100% { background: linear-gradient(135deg, rgba(109,40,217,.06) 0%, rgba(59,130,246,.06) 25%, rgba(16,185,129,.06) 50%, rgba(244,63,94,.03) 75%, rgba(251,191,36,.06) 100%); }
+  50% { background: linear-gradient(135deg, rgba(16,185,129,.06) 0%, rgba(59,130,246,.06) 25%, rgba(109,40,217,.06) 50%, rgba(251,191,36,.06) 75%, rgba(244,63,94,.03) 100%); }
+}
+body.animated-bg { animation: gradientShift 28s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { body.animated-bg { animation: none !important; } }
+
+/* =================  SKIP LINK  ================= */
+.skip-link {
+  position: absolute; left: 10px; top: -100px;
+  background: var(--text-primary); color: var(--card-bg);
+  padding: 10px 15px; border-radius: 4px; z-index: 10000;
+  font-size: .9rem; transition: top 0.3s ease-in-out;
+}
+.skip-link:focus { top: 10px; }
+
+/* =================  SITE HEADER  ================= */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%;
+  height: var(--header-height); padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  z-index: 500; border-bottom: 1px solid var(--border-subtle);
+}
+.logo {
+  width: 64px; height: 64px; /* Adjusted for visual balance */
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: var(--text-on-accent); font-size: 1.5rem;
+  text-decoration: none; box-shadow: var(--shadow-md); flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.logo:hover { transform: scale(1.05); }
+
+.menu-btn {
+  background: var(--neutral-bg); border-radius: 10px;
+  width: auto; min-width: 46px; height: 46px; padding: 6px 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; transition: transform .2s, background-color 0.2s;
+  border: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm);
+}
+.menu-btn:hover { transform: scale(1.03); background-color: rgba(230,230,230,.95); }
+.menu-btn:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+.menu-label { font-size: 0.65rem; color: var(--text-secondary); line-height: 1; font-weight: 500;}
+.menu-icon { display: flex; flex-direction: column; gap: 4px; }
+.menu-icon span { width: 18px; height: 2px; background: var(--text-primary); border-radius: 1px; display: block; transition: transform 0.3s ease, opacity 0.3s ease; }
+
+.menu-btn[aria-expanded="true"] .menu-label { display: none; }
+.menu-btn[aria-expanded="true"] .menu-icon span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] .menu-icon span:nth-child(2) { opacity: 0; }
+.menu-btn[aria-expanded="true"] .menu-icon span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* =================  MEGA MENU  ================= */
+.mega-menu {
+  position: fixed; top: var(--header-height); left: 0; width: 100%;
+  max-height: calc(100vh - var(--header-height)); overflow-y: auto;
+  padding: 40px 60px; background: var(--panel-bg);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  z-index: 400; border-bottom: 1px solid var(--border-subtle);
+  opacity: 0; visibility: hidden; transform: translateY(-10px);
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s, transform 0.3s ease;
+}
+.mega-menu:not([hidden]) {
+  opacity: 1; visibility: visible; transform: translateY(0);
+  transition: opacity 0.3s ease, visibility 0s linear 0s, transform 0.3s ease;
+}
+.mega-inner { display: flex; gap: clamp(32px, 5vw, 64px); justify-content: center; flex-wrap: wrap; max-width: 980px; margin: 0 auto; }
+.mega-col h3 { font-size: 1rem; margin-bottom: 12px; color: var(--text-primary); font-weight: 600; }
+.mega-col ul { display: flex; flex-direction: column; gap: 8px; }
+.mega-col a { color: var(--text-secondary); font-size: .9rem; transition: color .2s; padding: 4px 2px; }
+.mega-col a:hover, .mega-col a:focus { color: var(--accent-blue); outline: none; }
+.mega-col a:focus-visible { text-decoration: underline; box-shadow: 0 0 0 2px var(--accent-blue); border-radius: 3px; }
+body.menu-open { overflow: hidden; }
+
+/* =================  HERO SECTION  ================= */
+.hero-section {
+  flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: calc(var(--header-height) + 40px) 20px 50px 20px; text-align: center;
+}
+.hero-card {
+  background: var(--neutral-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-radius: 28px; padding: clamp(40px, 6vw, 64px) clamp(30px, 5vw, 52px);
+  max-width: 640px; width: 100%; box-shadow: var(--shadow-xl);
+  animation: cardAppear 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s backwards;
+  margin-bottom: 36px; border: 1px solid rgba(255,255,255,0.3);
+}
+@keyframes cardAppear { from { opacity: 0; transform: translateY(30px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.hero-heading { font-size: clamp(2.1rem, 5vw, 3rem); font-weight: 700; line-height: 1.2; margin-bottom: 0.8rem; }
+.hero-sub { font-size: clamp(1rem, 2.5vw, 1.15rem); color: var(--text-secondary); margin-bottom: 48px; max-width: 480px; margin-left: auto; margin-right: auto; }
+.cta-wrapper { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.hero-btn {
+  position: relative; overflow: hidden; padding: 1.2rem 2.4rem; border-radius: 16px;
+  font-size: 1.1rem; font-weight: 600; min-width: 180px; color: var(--text-on-accent);
+  transition: transform var(--card-hover-duration) cubic-bezier(.4,0,.2,1), box-shadow var(--card-hover-duration) ease;
+  will-change: transform, box-shadow;
+}
+.hero-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(70deg, transparent, rgba(255,255,255,.25), transparent);
+  transform: translateX(-100%) skewX(-25deg); transition: transform .8s;
+}
+.hero-btn:hover::before, .hero-btn:focus::before { transform: translateX(100%) skewX(-25deg); }
+.hero-btn:hover, .hero-btn:focus { transform: translateY(-3px); outline: none; }
+.hero-btn:focus-visible { box-shadow: 0 0 0 3px var(--neutral-bg), 0 0 0 5px currentColor; /* Uses button's own bg color for currentColor */ }
+.btn--blue { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); box-shadow: 0 8px 20px -2px rgba(102, 126, 234, .4); }
+.btn--blue:hover, .btn--blue:focus { box-shadow: 0 10px 25px -3px rgba(102, 126, 234, .5); }
+.btn--green { background: linear-gradient(135deg, var(--accent-green), var(--accent-teal)); box-shadow: 0 8px 20px -2px rgba(17, 153, 142, .4); }
+.btn--green:hover, .btn--green:focus { box-shadow: 0 10px 25px -3px rgba(17, 153, 142, .5); }
+
+.hero-btn.active-btn-feel { transform: translateY(-1px); box-shadow: 0 0 0 3px var(--accent-blue), 0 6px 18px -2px rgba(102, 126, 234, .5); }
+.hero-btn.active-btn-need { transform: translateY(-1px); box-shadow: 0 0 0 3px var(--accent-green), 0 6px 18px -2px rgba(17, 153, 142, .5); }
+
+
+/* =================  CHOICE PANELS & CARDS  ================= */
+.choice-wrapper { width: 100%; max-width: 1120px; margin-top: 16px; padding: 0 16px; position: relative; }
+.panel {
+  width: 100%; max-height: 0; opacity: 0; overflow: hidden;
+  pointer-events: none;
+  transition: max-height var(--panel-transition-duration) cubic-bezier(.22,.61,.36,1), opacity calc(var(--panel-transition-duration) * 0.7) ease calc(var(--panel-transition-duration) * 0.1);
+}
+.panel--open { max-height: 2500px; opacity: 1; pointer-events: auto; overflow: visible; }
+.option-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 28px; padding-top: 10px; }
+
+/* SOPHISTICATED CARD BASE STYLES */
+.hub-card, .option-card {
+  background: var(--card-bg);
+  border-radius: 18px; /* Slightly less rounded for a sleeker look */
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--border-subtle); /* Base shadow + subtle border */
+  transition: transform var(--card-hover-duration) ease, box-shadow var(--card-hover-duration) ease;
+  transform-origin: 50% 0;
+  position: relative;
+  overflow: hidden; /* For ::before elements and ensuring content clips */
+  border: 3px solid transparent; /* Thematic border will be applied here */
+  display: flex; /* Helps structure card content */
+  flex-direction: column;
+}
+.hub-card:hover, .option-card:hover,
+.hub-card:focus-within, .option-card:focus-within { /* focus-within for keyboard nav accessibility */
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-strong); /* Stronger shadow on hover */
+}
+.hub-card::before, .option-card::before { /* Thematic top bar */
+  content: ''; position: absolute; top: 0; left: -1px; right: -1px; /* Cover border */
+  height: 8px; /* Slimmer bar */
+  background-color: transparent; /* Set by theme */
+  transition: height 0.2s ease;
+}
+.hub-card:hover::before, .option-card:hover::before { height: 10px; }
+
+/* Theming for Panel Feel (Blue) */
+.panel--blue .hub-card { border-color: var(--accent-blue); }
+.panel--blue .hub-card::before { background-color: var(--accent-blue); }
+
+/* Theming for Panel Need (Green) */
+/* This applies if .option-card is used directly as `<a>` OR if .hub-card structure is used within .panel--green */
+.panel--green .option-card,
+.panel--green .hub-card { /* If you use .hub-card structure in green panel */
+  border-color: var(--accent-green);
+}
+.panel--green .option-card::before,
+.panel--green .hub-card::before {
+  background-color: var(--accent-green);
+}
+
+/* Hub Card (Accordion style) - Structure */
+.hub-trigger {
+  display: block; width: 100%; padding: 28px 24px 18px 24px; /* Adjusted padding for top bar */
+  font-weight: 600; font-size: 1.05rem; line-height: 1.35; color: var(--text-primary);
+  text-align: left; position: relative; background-color: transparent;
+  border: none; /* Reset button border */
+}
+.hub-trigger strong { font-weight: 700; }
+.hub-trigger::after {
+  content: "▾"; float: right; transition: transform .25s; font-size: 1.3em;
+  color: var(--text-secondary); margin-left: 10px;
+}
+.hub-trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
+.hub-trigger:focus-visible {
+  outline: 2px solid currentColor; /* Uses panel color for focus outline via inheritance */
+  outline-offset: -3px; border-radius: 0; /* Align with actual border */
+}
+/* Ensure trigger color is correct inside themed panels if currentColor is an issue */
+.panel--blue .hub-trigger { outline-color: var(--accent-blue); }
+.panel--green .hub-trigger { outline-color: var(--accent-green); }
+
+
+.hub-inner { padding: 0 24px 24px 24px; }
+.hub-inner[hidden] { display: none; }
+.hub-inner ul { display: flex; flex-direction: column; gap: 10px; margin: 12px 0 18px 0; }
+.hub-inner a { font-weight: 500; font-size: .9rem; padding: 4px 2px; }
+/* Link colors within cards, themed */
+.panel--blue .hub-inner a { color: var(--accent-blue); }
+.panel--green .hub-inner a { color: var(--accent-green); } /* Assuming hub-card structure might be used in green panel */
+
+.hub-inner a:hover, .hub-inner a:focus { text-decoration: underline; color: var(--accent-purple); } /* Default hover */
+.panel--green .hub-inner a:hover, .panel--green .hub-inner a:focus { color: var(--accent-teal); } /* Green theme hover */
+.hub-inner a:focus-visible { box-shadow: 0 0 0 2px currentColor; border-radius: 3px; }
+.hub-cta { display: inline-block; margin-top: 12px; font-weight: 600; font-size: .85rem; color: var(--text-secondary); }
+.hub-cta:hover, .hub-cta:focus { color: var(--accent-purple); }
+
+/* Option Card (Simpler, often direct link `<a>` tag) */
+.option-card { /* Is an `<a>` tag */
+  padding: 24px; /* More padding if it's just a link */
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.05rem;
+  min-height: 100px; /* Ensure a decent click area */
+  align-items: center; /* Vertically center if it's a flex item */
+  justify-content: center; /* Horizontally center */
+}
+/* Themed text color for option-card (if it's an <a> tag) */
+.panel--green .option-card { color: var(--accent-green); }
+.panel--blue .option-card { color: var(--accent-blue); } /* If option cards appear in blue panel */
+
+.option-card:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+
+/* Deal Animation for ALL Cards */
+.panel .hub-card, .panel .option-card {
+  opacity: 0; transform: translateY(-30px) scale(.95) rotateX(2deg);
+  pointer-events: none;
+}
+.panel.deal-in .hub-card, .panel.deal-in .option-card {
+  animation: dealIn var(--card-deal-in-duration) cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.panel.deal-out .hub-card, .panel.deal-out .option-card {
+  animation: dealOut var(--card-deal-out-duration) cubic-bezier(.55,.09,.68,.53) forwards;
+}
+@keyframes dealIn { to { opacity: 1; transform: translateY(0) scale(1) rotateX(0); pointer-events: auto; } }
+@keyframes dealOut { to { opacity: 0; transform: translateY(-30px) scale(.95) rotateX(2deg); pointer-events: none; } }
+
+
+/* =================  QUICK LINKS & FOOTER  ================= */
+.quick-links {
+  display: flex; justify-content: center; align-items: center; gap: clamp(20px, 4vw, 40px);
+  flex-wrap: wrap; background: rgba(255,255,255,.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  padding: 22px; margin-top: auto; width: 100%; border-top: 1px solid var(--border-subtle);
+}
+.quick-link { color: var(--text-secondary); font-weight: 500; font-size: 0.9rem; transition: color .2s; padding: 6px 4px; }
+.quick-link:hover, .quick-link:focus { color: var(--accent-blue); outline: none; }
+.quick-link:focus-visible { text-decoration: underline; box-shadow: 0 0 0 2px var(--accent-blue); border-radius: 3px; }
+.site-footer {
+  text-align: center; font-size: .85rem; color: var(--text-secondary);
+  padding: 36px 20px; width: 100%; background-color: rgba(240,240,240,0.4);
+}
+
+/* =================  RESPONSIVE STYLES  ================= */
+@media (max-width: 992px) { /* Tablet and below */
+  .option-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 24px;}
+}
+
+@media (max-width: 768px) { /* Mobile */
+  :root { --header-height: 70px; }
+  .site-header { padding: 0 20px; }
+  .logo { width: 56px; height: 56px; font-size: 1.3rem; border-radius: 14px; }
+  .menu-btn { min-width: 44px; height: 44px; padding: 4px 8px; }
+  .menu-btn[aria-expanded="false"] .menu-label { display: inline; }
+  .menu-btn[aria-expanded="false"] .menu-icon { display: none; }
+  .menu-btn[aria-expanded="true"] .menu-label { display: none; }
+  .menu-btn[aria-expanded="true"] .menu-icon { display: flex; }
+
+  .mega-menu { padding: 32px 24px; }
+  .mega-inner { flex-direction: column; gap: 28px; align-items: center; text-align: center; }
+  .mega-col ul { align-items: center; }
+  .hero-section { padding-top: calc(var(--header-height) + 20px); }
+  .cta-wrapper { flex-direction: column; gap: 16px; }
+  .hero-btn { width: 100%; max-width: 340px; padding: 1.1rem 2rem; }
+  .choice-wrapper { padding: 0 12px; }
+  .option-grid { grid-template-columns: 1fr; gap: 20px; } /* Single column for cards */
+  .hub-trigger { font-size: 1rem; padding: 26px 20px 16px 20px; }
+  .hub-inner { padding: 0 20px 20px 20px; }
+}
+@media (max-width: 480px) {
+  html { font-size: 93.75%; /* Approx 15px */ }
+  .hero-heading { font-size: 1.8rem; }
+  .hero-sub { font-size: 0.95rem; margin-bottom: 32px; }
+  .quick-links { gap: 15px; padding: 18px 15px; }
+  .quick-link { font-size: 0.85rem; }
+  .logo { width: 50px; height: 50px; font-size: 1.2rem; border-radius: 12px;}
+  .menu-btn { height: 40px; }
+  .hub-card, .option-card { border-radius: 16px; } /* Slightly larger radius can look good on mobile */
+}
